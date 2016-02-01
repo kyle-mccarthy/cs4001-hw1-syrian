@@ -43,8 +43,13 @@ class Parser:
 
     def import_html(self):
         if self.file is not None:
-            soup = BeautifulSoup(self.file.read, 'html.parser')
-            print(soup.prettify())
+            soup = BeautifulSoup(self.file.read(), 'html.parser')
+
+            # create the headers/keys by searching for the th
+            headers = []
+            for head in soup.find_all("th"):
+                headers.append(head.string)
+
 
     def export_html_table(self, file_name):
         if len(self.data) != 0:
