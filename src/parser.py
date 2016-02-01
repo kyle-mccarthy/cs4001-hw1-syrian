@@ -1,4 +1,6 @@
 import csv
+from collections import deque
+from collections import OrderedDict
 from bs4 import BeautifulSoup
 
 
@@ -45,10 +47,31 @@ class Parser:
         if self.file is not None:
             soup = BeautifulSoup(self.file.read(), 'html.parser')
 
-            # create the headers/keys by searching for the th
-            headers = []
-            for head in soup.find_all("th"):
-                headers.append(head.string)
+            # extract all of the data from the tr rows, we can assume that the first row contains the headers, since
+            # that is how our function outputs it
+            rows = []
+            for tags in soup.find_all("tr"):
+                row = []
+                for item in tags:
+                    s = str(item.string).strip(' \t\n\r')
+                    if (len(s) > 0):
+                        row.append(s)
+                rows.append(row)
+            self.data = Parser.map_list_to_dict(rows)
+            return True
+        return False
+
+
+    @staticmethod
+    # the list that we passed is essentially a FIFO queue, the first row is the header and the other rows are the
+    # data, we want to map the header to the data values
+    def map_list_to_dict(list_data):
+        data = []
+        queue = deque(list_data)
+        keys = queue.popleft()
+        for item in queue:
+            data.append(OrderedDict(zip(keys, item)))
+        return data
 
     # export the data as an html table, the data is cleaned up a little bit to make it easier to read using new lines
     # and tabs, the file name that it will be exported to is passed as a parameter.
