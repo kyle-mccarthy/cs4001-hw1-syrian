@@ -43,6 +43,8 @@ class Parser:
         print("Could not import CSV, no file.")
         return False
 
+    # import the data from an html file, the headers are stored in <th> tags, while the main data is stored in <td> tags
+    # this will call a helper static method that maps a list of list to a mapped data object
     def import_html(self):
         if self.file is not None:
             soup = BeautifulSoup(self.file.read(), 'html.parser')
