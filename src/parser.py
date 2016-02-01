@@ -50,26 +50,27 @@ class Parser:
             for head in soup.find_all("th"):
                 headers.append(head.string)
 
-
+    # export the data as an html table, the data is cleaned up a little bit to make it easier to read using new lines
+    # and tabs, the file name that it will be exported to is passed as a parameter.
     def export_html_table(self, file_name):
         if len(self.data) != 0:
             html = "<table>\n"
 
             # fill in the header
-            html += "\t<thead>\n\t<tr>\n"
+            html += "<thead><tr>"
             # insert header cols
             for col in self.field_names:
-                html += "\t\t<th>" + col + "</th>\n"
-            html += "\t</thead>\n"
+                html += "<th>" + col + "</th>"
+            html += "</tr></thead>"
 
             # fill in the table data
-            html += "\t<tbody>\n"
+            html += "<tbody>"
             for row in self.data:
-                html += "\t\t<tr>"
+                html += "<tr>"
                 for col in row:
                     html += "<td>" + col + "</td>"
-                html += "<tr>\n"
-            html += "\t</tbody>\n"
+                html += "<tr>"
+            html += "</tbody>"
 
             html += "</table>"
 
@@ -79,7 +80,7 @@ class Parser:
             except Exception:
                 print("Could not write the table data, could not create file.")
             else:
-                fp.write(html)
+                fp.write(BeautifulSoup(html, "html.parser").prettify())
                 fp.close()
             return True
         else:
