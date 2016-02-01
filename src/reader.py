@@ -29,8 +29,10 @@ class Reader:
     def import_csv(self):
         # ensure that the file exists and is open
         if self.file is not None:
-            # using DictReader, read in the lines that are not the CSV header and append them to the mapped data var
-            dr = csv.DictReader(self.file, self.field_names)
+            # we need to use reader as it uses a list instead of dict, keeping the order of the filed intact, which
+            # becomes very important when exporting the file information.  Additionally, we will need to skip the first
+            # line of the CSV since it is the header.
+            dr = csv.reader(self.file, self.field_names)
             next(dr)
             for line in dr:
                 self.data.append(line)
@@ -40,23 +42,23 @@ class Reader:
 
     def export_html_table(self, file_name):
         if len(self.data) != 0:
-            html = "<table>"
+            html = "<table>\n"
 
             # fill in the header
-            html += "<thead><tr>"
+            html += "\t<thead>\n\t<tr>\n"
             # insert header cols
             for col in self.field_names:
-                html += "<th>" + col + "</th>"
-            html += "</thead>"
+                html += "\t\t<th>" + col + "</th>\n"
+            html += "\t</thead>\n"
 
             # fill in the table data
-            html += "<tbody>"
+            html += "\t<tbody>\n"
             for row in self.data:
-                html += "<tr>"
-                for col in row.values():
+                html += "\t\t<tr>"
+                for col in row:
                     html += "<td>" + col + "</td>"
-                html += "<tr>"
-            html += "</tbody>"
+                html += "<tr>\n"
+            html += "\t</tbody>\n"
 
             html += "</table>"
 
