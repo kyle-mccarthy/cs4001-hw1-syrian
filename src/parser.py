@@ -1,7 +1,8 @@
 import csv
+from bs4 import BeautifulSoup
 
 
-class Reader:
+class Parser:
 
     def __init__(self):
         self.file = None
@@ -39,6 +40,11 @@ class Reader:
             return True
         print("Could not import CSV, no file.")
         return False
+
+    def import_html(self):
+        if self.file is not None:
+            soup = BeautifulSoup(self.file.read, 'html.parser')
+            print(soup.prettify())
 
     def export_html_table(self, file_name):
         if len(self.data) != 0:
