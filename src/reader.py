@@ -62,6 +62,7 @@ class Reader:
 
             html += "</table>"
 
+            # export the data in HTML format
             try:
                 fp = open(file_name, 'w')
             except Exception:
