@@ -1,4 +1,5 @@
 import csv
+import json
 from collections import deque
 from collections import OrderedDict
 from bs4 import BeautifulSoup
@@ -72,7 +73,9 @@ class Parser:
         queue = deque(list_data)
         keys = queue.popleft()
         for item in queue:
-            data.append(OrderedDict(zip(keys, item)))
+            # sure not to add junk data, the number of items should map exactly to the number of keys
+            if len(item) > 1:
+                data.append(OrderedDict(zip(keys, item)))
         return data
 
     # export the data as an html table, the data is cleaned up a little bit to make it easier to read using new lines
@@ -112,3 +115,14 @@ class Parser:
             print("Could not print the table, no data imported.")
             return False
 
+    def export_json(self, file_name):
+        if len(self.data) != 0:
+            try:
+                fp = open(file_name, 'w')
+            except Exception:
+                print("Could not write the json data, could not create file.")
+            else:
+                fp.write(json.dumps(self.data))
+                fp.close()
+                return True
+            return False
