@@ -38,3 +38,37 @@ class Reader:
         print("Could not import CSV, no file.")
         return False
 
+    def export_html_table(self, file_name):
+        if len(self.data) != 0:
+            html = "<table>"
+
+            # fill in the header
+            html += "<thead><tr>"
+            # insert header cols
+            for col in self.field_names:
+                html += "<th>" + col + "</th>"
+            html += "</thead>"
+
+            # fill in the table data
+            html += "<tbody>"
+            for row in self.data:
+                html += "<tr>"
+                for col in row.values():
+                    html += "<td>" + col + "</td>"
+                html += "<tr>"
+            html += "</tbody>"
+
+            html += "</table>"
+
+            try:
+                fp = open(file_name, 'a+')
+            except Exception:
+                print("Could not write the table data, could not create file.")
+            else:
+                fp.write(html)
+                fp.close()
+            return True
+        else:
+            print("Could not print the table, no data imported.")
+            return False
+
