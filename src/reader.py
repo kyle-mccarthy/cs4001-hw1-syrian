@@ -5,9 +5,9 @@ class Reader:
 
     # This method will take in a file name intended to be read, and then will proceed to parse the file line by
     # line and save the data to the object.
-    def file_input(self, file_name):
+    def file_input(self, file_name, enc=None):
         try:
-            fp = open(file_name, 'r')
+            fp = open(file_name, 'r', encoding=enc)
         except FileNotFoundError:
             print("The file could not be opened.")
         else:
