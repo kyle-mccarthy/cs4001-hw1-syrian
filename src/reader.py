@@ -61,7 +61,7 @@ class Reader:
             html += "</table>"
 
             try:
-                fp = open(file_name, 'a+')
+                fp = open(file_name, 'w')
             except Exception:
                 print("Could not write the table data, could not create file.")
             else:
