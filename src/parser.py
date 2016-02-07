@@ -78,8 +78,8 @@ class Parser:
                 data.append(OrderedDict(zip(keys, item)))
         return data
 
-    # export the data as an html table, the data is cleaned up a little bit to make it easier to read using new lines
-    # and tabs, the file name that it will be exported to is passed as a parameter.
+    # export the data as an html table, the data is cleaned up a little using the BS4 lib, specifically prettify,
+    # the file name that it will be exported to is passed as a parameter.
     def export_html_table(self, file_name):
         if len(self.data) != 0:
             html = "<table>\n"
@@ -115,6 +115,7 @@ class Parser:
             print("Could not print the table, no data imported.")
             return False
 
+    # export the data as json to file_name
     def export_json(self, file_name):
         if len(self.data) != 0:
             try:
